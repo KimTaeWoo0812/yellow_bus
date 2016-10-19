@@ -1,0 +1,158 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+	pageEncoding="EUC-KR"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="com.javalec.member.Member_Dto"%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+<script type="text/javascript" src="/JSP_Server2/jquery-1.12.2.min.js"></script>
+
+</head>
+<body>
+
+		테스트 : <input type="text" name="asd" id="asd"> <br />
+
+	<%
+		ArrayList<Member_Dto> dtos = new ArrayList<Member_Dto>();
+		String name = "unknown";
+		dtos = (ArrayList) request.getAttribute("list");
+
+		name = request.getParameter("schoolName");
+	%>
+
+	
+
+
+	<form action="main.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="학원정보">
+	</form>
+	<form action="memberList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="원생관리">
+	</form>
+	<form action="carList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="차량관리">
+	</form>
+	<form action="beaconList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="비콘관리" >
+	</form>
+
+
+
+<%
+int j = 2;
+%>
+ 		
+<script language='javascript'">
+//window.history.forward(1); //back버튼 방지스크립트 
+
+function FSetId(ID){
+	//document.all.ID.value = ID;
+	$('#ID').val(ID);
+}
+function FSetName(NAME){
+	$('#NAME').val(NAME);
+}
+function FSetRole(ROLE){
+	$('#ROLE').val(ROLE);
+}
+function FSetParent1(PARENT1){
+	$('#PARENT1').val(PARENT1);
+}
+function InPutCheck(){
+	if(document.frm1.ID.value==''){
+		alert("아이디를 입력하세요!");
+		document.frm1.id.focus();
+	}
+	else if(document.frm1.NAME.value==''){
+		alert("이름을 입력하세요!");
+		document.frm1.pw.focus();
+	}
+	else{
+		document.frm1.submit(); 
+    	return true;
+	}
+}
+</script>
+
+<form name=form method="post" action="memberDelete.do">
+	<table border="1">
+		<%
+ 	
+ 	out.println(dtos.size());
+ 	out.println("<TR><td>번호</td><td>선택</td><td>학생ID</td><td>이름</td><td>등급</td><td>학부모ID</td><td>수정</td></TR>");
+ 	Member_Dto dto = new Member_Dto();
+ 	
+ 	for (int i = 0; i < dtos.size(); i++) {
+ 		dto = dtos.get(i);
+ 		
+ 		out.println("<TR>");
+ 		out.println("<td>" + (i+1) + "</td>");
+ 		%>
+ 		<td>
+        <input type=checkbox name=check value="<%=dto.GetId()%>">
+         </td>
+         
+    <%
+    
+ 		out.println("<td>" + dto.GetId() + "</td>");
+ 		out.println("<td>" + dto.GetName() + "</td>");
+ 		out.println("<td>" + dto.GetRole() + "</td>");
+ 		out.println("<td>" + dto.GetParent1() + "</td>");
+ 		out.println("<td>");
+ 		
+ 		
+ 		%>
+ 		<input type="button" value="수정" 
+ 		onClick="FSetId('<%=dto.GetId()%>'), 
+ 		FSetName('<%=dto.GetName()%>'),
+ 		FSetRole('<%=dto.GetRole()%>'),
+ 		FSetParent1('<%=dto.GetParent1()%>')";/>
+ 		
+<%
+		out.println("</td>");
+ 		out.println("</TR>");
+ 		 
+
+ 	}
+ 	
+ %>
+ 
+ 
+	</table>
+	
+<input type="submit" value ="선택값 삭제">
+<input type="hidden" name="schoolName" value="<%=name%>" />
+   </form>
+	
+	
+	<form name="frm1" action="memberAdd.do" method="post"
+	onSubmit="InPutCheck();return false">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		학생 ID : <input type="text" name="id" id="ID"> <br />
+		학생 이름 : <input type="text" name="name" id="NAME"> <br />
+		학부모1 : <input type="text" name="parent1" id="PARENT1"><br />
+		학부모2 : <input type="text" name="parent2" id="PARENT2"><br />
+		등급 :
+		<from>
+		<select name="role" id="ROLE">
+		<option value="학생" selected>학생</option>
+		<option value="학부모" >학부모</option>
+		<option value="매니저" >매니저</option>
+		</select> 
+		</from>
+		
+		<br />
+		<input type="submit" value="학생 추가">
+	</form>
+	
+	
+
+
+</body>
+</html>

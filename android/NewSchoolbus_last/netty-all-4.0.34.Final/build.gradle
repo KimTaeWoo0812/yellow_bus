@@ -1,0 +1,2 @@
+configurations.create("default")
+artifacts.add("default", file('netty-all-4.0.34.Final.jar'))

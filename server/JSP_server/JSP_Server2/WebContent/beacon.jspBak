@@ -1,0 +1,95 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+	pageEncoding="EUC-KR"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="java.util.ArrayList"%>
+<%@ page import="com.javalec.beacon.Beacon_Dto"%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+
+<script language="javascript"> 
+//window.history.forward(1); //back버튼 방지스크립트 
+</script> 
+
+
+
+		<%
+ 	ArrayList<Beacon_Dto> dtos = new ArrayList<Beacon_Dto>();
+ 	String name = "unknown";
+ 	dtos = (ArrayList)request.getAttribute("list");
+ 	out.println(dtos.size());
+ 	name = request.getParameter("schoolName");
+ 	%>
+ 	<form action="main.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="학원정보">
+	</form>
+	<form action="memberList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="원생관리">
+	</form>
+	<form action="carList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="차량관리">
+	</form>
+	<form action="beaconList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="비콘관리" >
+	</form>
+	
+	<form name=form method="post" action="beaconDelete.do">
+	<table border="1">
+ 	<%
+ 	
+ 	out.println("<TR><td>선택</td><td>학원명</td><td>비콘이름</td><td>비콘고유번호</td><td>용도</td><td>등록날짜</td></TR>");
+ 	Beacon_Dto dto = new Beacon_Dto();
+ 	
+ 	
+ 	out.println(request.getAttribute("schoolName"+"              아아ㅏ"));
+ 	for (int i = 0; i < dtos.size(); i++) {
+ 		dto = dtos.get(i);
+ 		out.println("<TR>");
+ 		%>
+ 		<td>
+        <input type=checkbox name=check value="<%=dto.GetIdentifier()%>">
+   		 </td>
+    <%
+ 		//out.println("<td>" + request.getParameter("schoolName") + "</td>");
+ 		out.println("<td>" + dto.GetSchoolName() + "</td>");
+ 		out.println("<td>" + dto.GetBeaconName() + "</td>");
+ 		out.println("<td>" + dto.GetIdentifier() + "</td>");
+ 		out.println("<td>" + dto.GetIsCar() + "</td>");
+ 		out.println("<td>" + dto.GetMakeDate() + "</td>");
+ 		out.println("</TR>");
+
+ 	}
+ 	name = request.getParameter("schoolName");
+ %>
+
+	</table>
+<input type="submit" value ="선택값 삭제">
+<input type="hidden" name="schoolName" value="<%=name%>" />
+   </form>
+	
+	
+	<form action="beaconAdd.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		비콘 이름 : <input type="text" name="beaconName"> <br />
+		고유번호 : <input type="text" name="identifier"><br />
+		<from>
+		<select name="isCar">
+		<option value="차량용" selected>차량용</option>
+		<option value="학원용" >학원용</option>
+		</select> 
+		</from>
+		
+		
+		<input type="submit" value="비콘 추가">
+	</form>
+
+
+</body>
+</html>

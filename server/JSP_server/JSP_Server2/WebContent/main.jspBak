@@ -1,0 +1,74 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="com.javalec.login.School_Dto" %>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+
+<title>Insert title here</title>
+</head>
+<body>
+
+<script language="javascript"> 
+//window.history.forward(1); //back버튼 방지스크립트 
+</script> 
+	
+	<%
+	School_Dto dto = new School_Dto();
+	String name = "unknown";
+	dto = (School_Dto)request.getAttribute("info");
+	name = dto.GetName();
+	%>
+	
+	<form action="main.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="학원정보">
+	</form>
+	<form action="memberList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="원생관리">
+	</form>
+	<form action="carList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="차량관리">
+	</form>
+	<form action="beaconList.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="비콘관리" >
+	</form>
+	
+	 <%
+		//dto = new School_Dto();
+		
+		
+		out.println("학원명: "+"<h1>"+dto.GetName()+"</h1></br>");
+		out.println("위치: "+"<a>"+dto.GetLocation()+"</a></br>");
+		out.println("좌표 X: "+"<a>"+dto.GetLat()+"</a></br>");
+		out.println("좌표 Y: "+"<a>"+dto.GetLon()+"</a></br>");
+		out.println("사장: "+"<a>"+dto.GetManager()+"</a></br>");
+		//out.println(dto.GetIsNotice());
+		if(dto.GetIsNotice().equals("1"))
+			out.println("공지: "+"<a>"+dto.GetNotice()+"</a></br>"); 
+		else
+			out.println("공지: "+"<a>"+"공지가 없습니다."+"</a></br>"); 
+		%>   
+	<form action="reNotice.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		공지 : <input type="text" name="notice"> <br />
+		<input type="submit" value="공지 변경/생성">
+	</form>
+	<form action="deleteNotice.do" method="post">
+	<input type="hidden" name="schoolName" value="<%=name%>" />
+		<input type="submit" value="공지 삭제">
+	</form>
+	
+	
+	
+	
+	
+	
+
+</body>
+</html>
